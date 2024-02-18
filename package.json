@@ -1,0 +1,18 @@
+{
+    "name": "flows-example",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "test": "echo \"ERROR: no test specified\" && exit 1",
+        "start": "twilio-run",
+        "ci:deploy-flows": "node ./scripts/deployFlows.js"
+    },
+    "devDependencies": {
+        "lodash": "^4.17.15",
+        "twilio": "^3.84.1",
+        "twilio-run": "^2.8.0"
+    },
+    "engines": {
+        "node": "20"
+    }
+}
