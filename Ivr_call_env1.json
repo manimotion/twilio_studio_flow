@@ -1,0 +1,343 @@
+{
+  "description": "IVR for creating a Flex voice task",
+  "states": [
+    {
+      "name": "Trigger",
+      "type": "trigger",
+      "transitions": [
+        {
+          "event": "incomingMessage"
+        },
+        {
+          "next": "menu",
+          "event": "incomingCall"
+        },
+        {
+          "event": "incomingConversationMessage"
+        },
+        {
+          "next": "menu",
+          "event": "incomingRequest"
+        },
+        {
+          "event": "incomingParent"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": -130,
+          "y": 0
+        }
+      }
+    },
+    {
+      "name": "Joke",
+      "type": "say-play",
+      "transitions": [
+        {
+          "next": "Bye_message",
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "voice": "default",
+        "offset": {
+          "x": -930,
+          "y": 1100
+        },
+        "loop": 1,
+        "say": "How do you know if a bee is using your phone? The line will be buzzy.",
+        "language": "en-US"
+      }
+    },
+    {
+      "name": "music",
+      "type": "say-play",
+      "transitions": [
+        {
+          "next": "Bye_message",
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "play": "http://demo.twilio.com/docs/classic.mp3",
+        "voice": "default",
+        "offset": {
+          "x": -540,
+          "y": 1100
+        },
+        "loop": 1,
+        "language": "en-US"
+      }
+    },
+    {
+      "name": "options_1",
+      "type": "split-based-on",
+      "transitions": [
+        {
+          "next": "not_valid_option_1",
+          "event": "noMatch"
+        },
+        {
+          "next": "Joke",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to 1",
+              "arguments": [
+                "{{widgets.menu.Digits}}"
+              ],
+              "type": "equal_to",
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "next": "music",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to 2",
+              "arguments": [
+                "{{widgets.menu.Digits}}"
+              ],
+              "type": "equal_to",
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "next": "submenu",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to 3",
+              "arguments": [
+                "{{widgets.menu.Digits}}"
+              ],
+              "type": "equal_to",
+              "value": "3"
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "input": "{{widgets.menu.Digits}}",
+        "offset": {
+          "x": -430,
+          "y": 670
+        }
+      }
+    },
+    {
+      "name": "menu",
+      "type": "gather-input-on-call",
+      "transitions": [
+        {
+          "next": "options_1",
+          "event": "keypress"
+        },
+        {
+          "event": "speech"
+        },
+        {
+          "event": "timeout"
+        }
+      ],
+      "properties": {
+        "voice": "default",
+        "number_of_digits": 1,
+        "speech_timeout": "auto",
+        "offset": {
+          "x": -110,
+          "y": 410
+        },
+        "loop": 1,
+        "finish_on_key": "#",
+        "say": "Hello. Press or say One for a joke, Two for some music, or Three for information about our products.",
+        "language": "en-US",
+        "stop_gather": true,
+        "gather_language": "en-US",
+        "profanity_filter": "true",
+        "timeout": 5
+      }
+    },
+    {
+      "name": "submenu",
+      "type": "gather-input-on-call",
+      "transitions": [
+        {
+          "next": "options_2",
+          "event": "keypress"
+        },
+        {
+          "event": "speech"
+        },
+        {
+          "event": "timeout"
+        }
+      ],
+      "properties": {
+        "number_of_digits": 1,
+        "speech_timeout": "auto",
+        "offset": {
+          "x": 90,
+          "y": 1340
+        },
+        "loop": 1,
+        "finish_on_key": "#",
+        "say": "Press or say One for information about appliances, Two for customer service.",
+        "language": "default",
+        "stop_gather": true,
+        "gather_language": "en-US",
+        "profanity_filter": "true",
+        "timeout": 5
+      }
+    },
+    {
+      "name": "appliances",
+      "type": "say-play",
+      "transitions": [
+        {
+          "next": "Bye_message",
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "voice": "default",
+        "offset": {
+          "x": -80,
+          "y": 1840
+        },
+        "loop": 1,
+        "say": "Thanks for your interest in our appliances. We offer a wide range of high-quality products.",
+        "language": "en-US"
+      }
+    },
+    {
+      "name": "customer_service",
+      "type": "say-play",
+      "transitions": [
+        {
+          "next": "Bye_message",
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "voice": "default",
+        "offset": {
+          "x": 260,
+          "y": 1840
+        },
+        "loop": 1,
+        "say": "Our customer service team is here to assist you. Please hold for the next available representative.",
+        "language": "en-US"
+      }
+    },
+    {
+      "name": "options_2",
+      "type": "split-based-on",
+      "transitions": [
+        {
+          "next": "not_valid_option_2",
+          "event": "noMatch"
+        },
+        {
+          "next": "appliances",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to 1",
+              "arguments": [
+                "{{widgets.submenu.Digits}}"
+              ],
+              "type": "equal_to",
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "next": "customer_service",
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to 2",
+              "arguments": [
+                "{{widgets.submenu.Digits}}"
+              ],
+              "type": "equal_to",
+              "value": "2"
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "input": "{{widgets.submenu.Digits}}",
+        "offset": {
+          "x": 0,
+          "y": 1570
+        }
+      }
+    },
+    {
+      "name": "not_valid_option_1",
+      "type": "say-play",
+      "transitions": [
+        {
+          "next": "menu",
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": -1150,
+          "y": 670
+        },
+        "loop": 1,
+        "say": "Sorry, that's not a valid option. Please try again.",
+        "language": "default"
+      }
+    },
+    {
+      "name": "not_valid_option_2",
+      "type": "say-play",
+      "transitions": [
+        {
+          "next": "submenu",
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": -490,
+          "y": 1590
+        },
+        "loop": 1,
+        "say": "Sorry, that's not a valid option. Please try again.",
+        "language": "default"
+      }
+    },
+    {
+      "name": "Bye_message",
+      "type": "say-play",
+      "transitions": [
+        {
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": -1010,
+          "y": 1520
+        },
+        "loop": 1,
+        "say": "Thanks for calling, have a great day",
+        "language": "default"
+      }
+    }
+  ],
+  "initial_state": "Trigger",
+  "flags": {
+    "allow_concurrent_calls": true
+  }
+}
