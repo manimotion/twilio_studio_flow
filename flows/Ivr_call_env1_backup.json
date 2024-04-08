@@ -46,7 +46,7 @@
           "y": 1100
         },
         "loop": 1,
-        "say": "How do you know if a bee is using your phone? The line will be buzzy.",
+        "say": "How do you know if a bee is using your phone? The line will be buzzzy.",
         "language": "en-US"
       }
     },
@@ -312,7 +312,7 @@
           "x": -490,
           "y": 1590
         },
-        "loop": 2,
+        "loop": 1,
         "say": "Sorry, that's not a valid option. Please try again",
         "language": "default"
       }
